@@ -2,6 +2,9 @@
 title: ReFed Solutions - Analysis
 author: Steph Locke
 date: 2020-05-06
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r pkgs, echo=FALSE, message=FALSE}
@@ -60,20 +63,22 @@ We need to get a single dataset suuitable for k-means clustering.
 ```{r single_level}
 sol_summary %>%
     group_by(solution_group,solution_priority_action_area,solution_name) %>%
-    summarise_if(is.numeric,sum) ->
+    summarise_if(is.numeric,sum) %>%
+    ungroup() ->
     sol_summary_hl
 
 sol_finance_stakeholder  %>%
     group_by(solution_group,solution_priority_action_area,solution_name) %>%
-    summarise_if(is.numeric,sum) ->
+    summarise_if(is.numeric,sum) %>%
+    ungroup()  ->
     sol_finance_hl
 ```
 
 ```{r combine_dataset}
 sol_summary_hl %>%
     inner_join(sol_finance_hl, by=c("solution_group","solution_priority_action_area","solution_name")) %>%
-    column_to_rownames("solution_name") %>%
-    select(-solution_group,-solution_priority_action_area) ->
+    select(-(solution_group:solution_priority_action_area)) %>%
+    select(-ends_with(".y")) ->
     sol_hl
 ```
 
@@ -82,6 +87,7 @@ sol_summary_hl %>%
 ```{r prepare_data}
 recipe(~., data=sol_hl) %>%
   step_normalize(all_numeric_predictors()) %>%
+  update_role(solution_name, new_role = "id variable") %>%
   prep() ->
   processor
 
@@ -89,11 +95,14 @@ sol = bake(processor, sol_hl)
 summary(sol)
 ```
 
-The following code aligns to the sample code in [tidymodels](https://www.tidymodels.org/learn/statistics/k-means/)
+The following code aligns to the sample code in [tidymodels](https://www.tidymodels.org/learn/statistics/k-means/). 
+
+It runs many clustering models and extract key results.
+
 ```{r kmeans_cluster}
  tibble(k = 1:9) %>%
   mutate(
-    kclust = map(k, ~kmeans(sol, .x)),
+    kclust = map(k, ~kmeans(sol[,-1], .x)),
     tidied = map(kclust, tidy),
     glanced = map(kclust, glance),
     augmented = map(kclust, augment, sol)
@@ -101,6 +110,7 @@ The following code aligns to the sample code in [tidymodels](https://www.tidymod
   cluster_results
 ```
 
+We can then split out the results into easier to use objects.
 ```{r split_results}
 cluster_results %>%
   unnest(cols = c(tidied)) ->
@@ -116,6 +126,7 @@ cluster_results %>%
 ```
 
 ## Visualise results
+We can look at the results of the clustering models split by key factors, bearing in mind the clustering is based on all numeric variables not just the ones shown.
 ```{r cluster_groups}
 p1 = ggplot(assignments, aes(x = annual_us_dollars_net_financial_benefit.x, y = annual_meal_equivalents_diverted)) +
   geom_point(aes(color = .cluster), alpha = 0.8) + 
@@ -125,9 +136,20 @@ p1 = ggplot(assignments, aes(x = annual_us_dollars_net_financial_benefit.x, y = 
 p1
 ```
 
+We can then explore the fit of the differing number of clusters to see where we get a diminishing returns.
 ```{r k_fit}
 ggplot(clusterings, aes(k, tot.withinss)) +
   geom_line() +
   geom_point()
-
 ```
+
+## Explore k=5 results
+It looks like 4-6 clusters is a good fit so let's look at the the groupings for k=5.
+```{r k_5}
+assignments %>%
+    filter(k==5) %>%
+    select(solution_name, .cluster) %>%
+    inner_join(sol_hl) %>%
+    arrange(.cluster, desc(annual_us_dollars_net_financial_benefit.x))
+```
+
