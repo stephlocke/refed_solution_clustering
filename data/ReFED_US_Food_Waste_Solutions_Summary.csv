@@ -1,0 +1,46 @@
+"Source: Calculated by ReFED based on data from various sources. See https://insights.refed.com/methodology for more information. Data last updated January 23, 2021",,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+solution_group,solution_priority_action_area,solution_name,annual_tons_diversion_potential,annual_mtco2e_reduction_potential,annual_gallons_water_savings_potential,annual_meal_equivalents_diverted,jobs_created,annual_us_dollars_cost,annual_us_dollars_gross_financial_benefit,annual_us_dollars_net_financial_benefit,relevent_for_consumers,relevent_for_foodservice,relevent_for_government,relevent_for_manufacturers,relevent_for_producers,relevent_for_retailers,relevent_for_solution_providers
+Prevention,Enhance Product Distribution,Decreased Transit Time,1012056.583,2239302.615,1.78E+11,1686760971,0,593049466.5,3119965380,2526915913,No,Yes,No,Yes,Yes,Yes,No
+Prevention,Enhance Product Distribution,First Expired First Out,617516.8676,1321674.063,94681650833,1029194779,0,557122813.7,2178827643,1621704829,No,Yes,No,Yes,No,Yes,No
+Prevention,Enhance Product Distribution,Intelligent Routing,1063892.473,2284504.639,1.64E+11,1773154121,1613.392935,806393929.1,3493442197,2687048268,No,Yes,No,Yes,No,Yes,Yes
+Prevention,Enhance Product Distribution,Reduced Warehouse Handling,22312.03628,43955.43752,3263352394,37186727.14,0,15538406.44,78888822.24,63350415.79,No,Yes,No,Yes,No,Yes,No
+Prevention,Enhance Product Distribution,Temperature Monitoring (pallet Transport),550550.7261,1171617.659,87554583174,917584543.5,834.9101761,221850383.3,1683755440,1461905057,No,No,No,Yes,Yes,Yes,Yes
+Prevention,Maximize Product Utilization,Active & Intelligent Packaging,451816.0394,2427158.05,1.94E+11,753026732.4,685.1790238,257093185.1,1997539100,1740445915,Yes,No,No,Yes,No,Yes,Yes
+Prevention,Maximize Product Utilization,Manufacturing Byproduct Utilization (upcycling),1869428.277,4851988.87,4.46E+11,3115713795,2834.987982,1899353300,4593390979,2694037679,No,No,No,Yes,No,No,Yes
+Prevention,Maximize Product Utilization,Manufacturing Line Optimization,967124.9121,2510114.652,2.31E+11,1611874853,0,273450533,601685303.5,328234770.5,No,No,No,Yes,No,No,No
+Prevention,Optimize The Harvest,Buyer Specification Expansion,667648.4468,148835.5613,24728706060,1112747411,0,6436182.385,2701115212,2694679030,No,No,No,Yes,Yes,Yes,No
+Prevention,Optimize The Harvest,Gleaning,78489.64411,-25666.03281,2142766670,130816073.5,291.9814761,47188467.56,199417572.8,152229105.3,Yes,No,No,No,Yes,No,Yes
+Prevention,Optimize The Harvest,Imperfect & Surplus Produce Channels,2892981.875,272830.8727,77846574631,4821636459,4387.207014,573580931.8,5653092738,5079511806,Yes,Yes,No,No,Yes,Yes,No
+Prevention,Optimize The Harvest,Partial Order Acceptance,38597.73326,70019.86975,7044725407,64329555.43,0,71918547.98,150672002.8,78753454.83,No,Yes,No,Yes,Yes,Yes,No
+Prevention,Refine Product Management,Assisted Distressed Sales,590486.9801,1540300.465,86438155823,984144966.8,895.4735053,5748612.053,345190466.6,339441854.6,No,No,No,Yes,No,No,Yes
+Prevention,Refine Product Management,Decreased Minimum Order Quantity,189227.6163,436067.8359,32311723609,315379360.4,0,98984460.81,667664938.1,568680477.2,No,Yes,No,No,No,Yes,No
+Prevention,Refine Product Management,Dynamic Pricing,461755.086,1049560.851,74745500301,769591810.1,700.251588,1043489664,2128058999,1084569335,No,No,No,No,No,Yes,Yes
+Prevention,Refine Product Management,Enhanced Demand Planning,1238756.071,2782118.889,2.00E+11,2064593451,1878.573581,274503936.8,5464103961,5189600025,No,No,No,No,No,Yes,Yes
+Prevention,Refine Product Management,Increased Delivery Frequency,138562.0908,330264.2085,24100344256,230936818.1,0,114911117.3,488898246.6,373987129.3,No,Yes,No,No,No,Yes,No
+Prevention,Refine Product Management,Markdown Alert Applications,771057.9761,2854651.318,1.47E+11,1285096627,1169.309421,1184175453,4991700293,3807524840,No,Yes,No,No,No,Yes,Yes
+Prevention,Refine Product Management,Minimized On Hand Inventory,195179.3171,442154.9669,29484111915,325298861.8,0,54215048.01,675072872.6,620857824.6,No,No,No,No,No,Yes,No
+Prevention,Refine Product Management,Temperature Monitoring (foodservice),4170.373389,21530.27974,1364546866,6950622.314,6.324371244,205002.8116,15728725.92,15523723.11,No,Yes,No,No,No,No,Yes
+Prevention,Refine Product Management,Waste Tracking (foodservice),1025157.137,4779743.126,2.57E+11,1708595228,1554.650798,1094300662,4910327202,3816026540,No,Yes,No,No,No,No,Yes
+Prevention,Reshape Consumer Environments,Buffet Signage,52265.44637,247545.7839,12465031884,87109077.29,0,61055.89931,194613016.1,194551960.2,No,Yes,No,No,No,No,Yes
+Prevention,Reshape Consumer Environments,Consumer Education Campaigns,1378336.083,7414999.686,2.81E+11,2297226806,522.5616676,103080625.1,6179302906,6076222281,Yes,No,Yes,No,No,Yes,Yes
+Prevention,Reshape Consumer Environments,K-12 Education Campaigns,14764.02715,70238.50225,3535921530,24606711.91,0,2308060.779,27824905.53,25516844.75,No,No,Yes,No,No,No,No
+Prevention,Reshape Consumer Environments,K-12 Lunch Improvements,7056.56114,33570.94108,1690016295,11760935.23,0,5011812.377,18258195.06,13246382.68,No,Yes,No,No,No,No,Yes
+Prevention,Reshape Consumer Environments,Meal Kits,1745758.12,7528022.537,3.49E+11,2909596867,2647.442189,727367059.3,7275416351,6548049292,Yes,No,No,No,No,Yes,No
+Prevention,Reshape Consumer Environments,Package Design,649542.2739,3570924.454,1.20E+11,1082570457,985.0308584,491714504.2,2878609898,2386895394,Yes,No,No,Yes,No,No,No
+Prevention,Reshape Consumer Environments,Portion Sizes,2418201.087,11493821.27,5.78E+11,4030335145,0,32209551.29,9033677907,9001468356,Yes,Yes,No,No,No,No,Yes
+Prevention,Reshape Consumer Environments,Small Plates,95614.29865,452897.7713,22804694944,159357164.4,0,36429179.07,392342129.5,355912950.4,No,Yes,No,No,No,No,Yes
+Prevention,Reshape Consumer Environments,Standardized Date Labels,582361.0715,2726219.678,1.62E+11,970601785.8,0,8093553.399,2416144283,2408050729,Yes,Yes,No,Yes,No,Yes,No
+Prevention,Reshape Consumer Environments,Trayless,104150.4385,493670.1576,24860017622,173584064.1,0,21576365.1,387687724.2,366111359.1,No,Yes,No,No,No,No,No
+Recycling,Recycle Anything Remaining,Centralized Anaerobic Digestion,3838416.985,912445.6514,0,0,3938.215826,611368874.8,782770218,171401343.2,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+Recycling,Recycle Anything Remaining,Centralized Composting,13834860.8,4941225.019,0,0,14249.90662,1337044335,1386425672,49381336.98,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+Recycling,Recycle Anything Remaining,Co-digestion At Wastewater Treatment Plants,3047990.442,840803.66,0,0,3127.238193,267592487.4,338591591.8,70999104.4,No,No,Yes,No,No,No,No
+Recycling,Recycle Anything Remaining,Community Composting,57037.94383,24961.14456,0,0,58.74908215,8206018.899,6724772.497,-1481246.402,Yes,No,Yes,No,No,No,Yes
+Recycling,Recycle Anything Remaining,Home Composting,93609.49587,40965.71514,0,0,0,3132245.181,7999530.329,4867285.148,Yes,No,Yes,No,No,No,No
+Recycling,Recycle Anything Remaining,Livestock Feed,60410.62802,-816.54665,0,0,91.61271739,5371176.632,3866466.173,-1504710.459,No,Yes,No,Yes,Yes,Yes,No
+Rescue,Strengthen Food Rescue,Donation Coordination & Matching,143661.1267,551987.9568,30836756058,239435211.1,534.4193912,66872444.91,661781246,594908801.1,Yes,Yes,Yes,No,No,Yes,Yes
+Rescue,Strengthen Food Rescue,Donation Education,1104457.881,893816.9023,1.35E+11,1840763135,4108.583317,425482413.2,4944316282,4518833869,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+Rescue,Strengthen Food Rescue,Donation Storage Handling & Capacity,265392.4624,306190.6043,34681491906,442320770.7,987.2599602,364935392.1,1191575555,826640163.4,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+Rescue,Strengthen Food Rescue,Donation Transportation,642723.0655,1010462.586,92916967594,1071205109,2390.929804,442402027,2897802575,2455400548,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+Rescue,Strengthen Food Rescue,Donation Value-added Processing,190782.3907,-62322.33839,5208357771,317970651.1,709.7104932,55330876.54,484909011.3,429578134.8,Yes,No,No,No,Yes,No,Yes

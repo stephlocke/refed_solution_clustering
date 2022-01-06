@@ -1,0 +1,133 @@
+---
+title: ReFed Solutions - Analysis
+author: Steph Locke
+date: 2020-05-06
+---
+
+```{r pkgs, echo=FALSE, message=FALSE}
+install.packages(c("tidyverse","tidymodels", "DataExplorer"))
+library(tidyverse)
+library(tidymodels)
+library(DataExplorer)
+```
+
+## Source
+ReFed is a US nonprofit working to reduce food waste in the US. They make data available on their [ReFed](https://refed.org/) site.
+
+This analysis will use the food waste reduction solutions dataset to help explore which solutions could be looked at in a group.
+
+**There is no public license for this dataset.** It may have been privately provided so no further use of the data from this repository is allowed.
+
+### Data 
+
+```{r coredata, echo=FALSE, message=FALSE}
+sol_detail = read_csv("data/ReFED_US_Food_Waste_Solutions_Detail.csv", skip=3)
+sol_finance_stakeholder = read_csv("data/ReFED_US_Food_Waste_Solutions_Financial_Summary_by_Stakeholder.csv", skip=3)
+sol_summary = read_csv("data/ReFED_US_Food_Waste_Solutions_Summary.csv", skip=3)
+sol_finance_stakeholder_state = read_csv("data/ReFED_US_State_Food_Waste_Solutions_Financial_Summary_by_Stakeholder.csv", skip=3)
+sol_summary_state = read_csv("data/ReFED_US_State_Food_Waste_Solutions_Summary.csv", skip=3)
+```
+
+```{r profile}
+# Configure specific for data profile doc
+produce_EDA = function(x) DataExplorer::create_report(
+                            get(x), 
+                            output_file=paste0(x,".html"), 
+                            output_dir="eda",
+                            report_title=x,
+                            config = configure_report(
+                                add_plot_qq=FALSE
+                            )
+                        )
+
+# Produce a profile of each sol dataset if possible
+if (rmarkdown::pandoc_available()){
+    lapply(ls(pattern="sol_*"), produce_EDA)
+}
+```
+
+View the profiles of each data set in the `eda/` directory.
+
+## Building a single dataset
+We need to get a single dataset suuitable for k-means clustering. 
+
+### Methodology notes
+- Features should be numeric and scaled.
+- As this is for explanatory purposes, we will not be creating a validation sample.
+- The datasets are at different levels of granularity. We will go to the highest level of granularity for initial developement.
+
+### Standardising granularity
+```{r single_level}
+sol_summary %>%
+    group_by(solution_group,solution_priority_action_area,solution_name) %>%
+    summarise_if(is.numeric,sum) ->
+    sol_summary_hl
+
+sol_finance_stakeholder  %>%
+    group_by(solution_group,solution_priority_action_area,solution_name) %>%
+    summarise_if(is.numeric,sum) ->
+    sol_finance_hl
+```
+
+```{r combine_dataset}
+sol_summary_hl %>%
+    inner_join(sol_finance_hl, by=c("solution_group","solution_priority_action_area","solution_name")) %>%
+    column_to_rownames("solution_name") %>%
+    select(-solution_group,-solution_priority_action_area) ->
+    sol_hl
+```
+
+## Build a model
+
+```{r prepare_data}
+recipe(~., data=sol_hl) %>%
+  step_normalize(all_numeric_predictors()) %>%
+  prep() ->
+  processor
+
+sol = bake(processor, sol_hl)
+summary(sol)
+```
+
+The following code aligns to the sample code in [tidymodels](https://www.tidymodels.org/learn/statistics/k-means/)
+```{r kmeans_cluster}
+ tibble(k = 1:9) %>%
+  mutate(
+    kclust = map(k, ~kmeans(sol, .x)),
+    tidied = map(kclust, tidy),
+    glanced = map(kclust, glance),
+    augmented = map(kclust, augment, sol)
+  ) ->
+  cluster_results
+```
+
+```{r split_results}
+cluster_results %>%
+  unnest(cols = c(tidied)) ->
+  clusters
+
+cluster_results %>% 
+  unnest(cols = c(augmented)) ->
+  assignments
+
+cluster_results %>%
+  unnest(cols = c(glanced)) ->
+  clusterings
+```
+
+## Visualise results
+```{r cluster_groups}
+p1 = ggplot(assignments, aes(x = annual_us_dollars_net_financial_benefit.x, y = annual_meal_equivalents_diverted)) +
+  geom_point(aes(color = .cluster), alpha = 0.8) + 
+  facet_wrap(~ k) +
+  geom_point(data = clusters, size = 10, shape = "x")
+
+p1
+```
+
+```{r k_fit}
+ggplot(clusterings, aes(k, tot.withinss)) +
+  geom_line() +
+  geom_point()
+
+```
