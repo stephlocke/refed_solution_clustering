@@ -46,9 +46,6 @@ jobs:
             path: ${{ env.RENV_PATHS_ROOT }}
             key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles('renv.lock') }}
             restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{inputs.cache-version }}-
-        - name: Install packages if required
-          run: |
-            renv::install()
         - name: Render Clustering Rmd File
           run: Rscript -e 'rmarkdown::render("R/clustering.Rmd", output_dir="outputs", knit_root_dir="..")'
         - name: Commit results
