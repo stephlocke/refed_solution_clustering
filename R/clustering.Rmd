@@ -12,6 +12,7 @@ output:
 library(tidyverse)
 library(tidymodels)
 library(DataExplorer)
+options(scipen=999)
 ```
 
 ## Source
@@ -31,7 +32,7 @@ sol_finance_stakeholder_state = read_csv("data/ReFED_US_State_Food_Waste_Solutio
 sol_summary_state = read_csv("data/ReFED_US_State_Food_Waste_Solutions_Summary.csv", skip=3)
 ```
 
-```{r profile}
+```{r profile, echo=FALSE}
 # Configure specific for data profile doc
 produce_EDA = function(x) DataExplorer::create_report(
                             get(x), 
@@ -40,7 +41,8 @@ produce_EDA = function(x) DataExplorer::create_report(
                             report_title=x,
                             config = configure_report(
                                 add_plot_qq=FALSE
-                            )
+                            ),
+                            quiet=TRUE
                         )
 
 # Produce a profile of each sol dataset if possible
