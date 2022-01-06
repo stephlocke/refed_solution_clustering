@@ -27,7 +27,7 @@ jobs:
         - name: Install rmarkdown and deps
           run: Rscript -e 'install.packages(c( "rmarkdown", "tidymodels", "tidyverse", "DataExplorer" ))'
         - name: Render Sample Rmd File
-          run: Rscript -e 'rmarkdown::render("R/clustering.Rmd", output_dir="outputs")'
+          run: Rscript -e 'rmarkdown::render("R/clustering.Rmd", output_dir="outputs", knit_root_dir=".")'
         - name: Commit results
           run: |
             git config user.name github-actions
