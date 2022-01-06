@@ -32,7 +32,9 @@ sol_finance_stakeholder_state = read_csv("data/ReFED_US_State_Food_Waste_Solutio
 sol_summary_state = read_csv("data/ReFED_US_State_Food_Waste_Solutions_Summary.csv", skip=3)
 ```
 
-```{r profile, echo=FALSE}
+The below creates data profiles of all the available data.
+
+```{r profile, echo=FALSE, results='hide'}
 # Configure specific for data profile doc
 produce_EDA = function(x) DataExplorer::create_report(
                             get(x), 
@@ -51,7 +53,13 @@ if (rmarkdown::pandoc_available()){
 }
 ```
 
-View the profiles of each data set in the `eda/` directory.
+View the profiles of each data set in the `eda/` directory of the project, or if viewing this as a webpage:
+
+- [sol_detail](sol_detail.html)
+- [sol_finance_stakeholder](sol_finance_stakeholder.html)
+- [sol_summary](sol_summary.html)
+- [sol_finance_stakeholder_state](sol_finance_stakeholder_state.html)
+- [sol_summary_state](sol_summary_state.html)
 
 ## Building a single dataset
 We need to get a single dataset suuitable for k-means clustering. 
@@ -82,6 +90,8 @@ sol_summary_hl %>%
     select(-(solution_group:solution_priority_action_area)) %>%
     select(-ends_with(".y")) ->
     sol_hl
+
+sol_hl
 ```
 
 ## Build a model
@@ -157,6 +167,16 @@ assignments %>%
     summarise_if(is.numeric,.funs=c("mean","min", "max")) %>%
     pivot_longer(cols=-.cluster) %>%
     pivot_wider(names_from=.cluster)
+```
+
+```{r cluster_points}
+clusters %>%
+    filter(k==5) %>%
+    select(-kclust, -glanced, -augmented, -k, -withinss, -size) %>%
+    pivot_longer(cols=-cluster) %>%
+    ggplot( aes(x=name, y=value, colour=cluster, group=cluster)) +
+     geom_line() +
+     coord_flip() 
 ```
 
 ```{r k_5_assignments}
