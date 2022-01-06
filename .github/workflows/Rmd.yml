@@ -58,3 +58,13 @@ jobs:
             git add .  || echo "No changes to commit"
             git commit -m "[ci skip] Built analysis"  || echo "No changes to commit"
             git push  || echo "No changes to commit"
+        - name: Prep for gh pages
+          run: |
+            mkdir public
+            cp outputs/* public/
+            cp eda/* public/
+        - name: Deploy
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./public
