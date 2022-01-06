@@ -145,7 +145,19 @@ ggplot(clusterings, aes(k, tot.withinss)) +
 
 ## Explore k=5 results
 It looks like 4-6 clusters is a good fit so let's look at the the groupings for k=5.
-```{r k_5}
+
+```{r k_5_summary}
+assignments %>%
+    filter(k==5) %>%
+    select(solution_name, .cluster) %>%
+    inner_join(sol_hl) %>%
+    group_by(.cluster) %>%
+    summarise_if(is.numeric,.funs=c("mean","min", "max")) %>%
+    pivot_longer(cols=-.cluster) %>%
+    pivot_wider(names_from=.cluster)
+```
+
+```{r k_5_assignments}
 assignments %>%
     filter(k==5) %>%
     select(solution_name, .cluster) %>%
