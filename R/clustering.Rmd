@@ -24,7 +24,7 @@ This analysis will use the food waste reduction solutions dataset to help explor
 
 ### Data 
 
-```{r coredata, echo=FALSE, message=FALSE}
+```{r coredata, results='hide', message=FALSE}
 sol_detail = read_csv("data/ReFED_US_Food_Waste_Solutions_Detail.csv", skip=3)
 sol_finance_stakeholder = read_csv("data/ReFED_US_Food_Waste_Solutions_Financial_Summary_by_Stakeholder.csv", skip=3)
 sol_summary = read_csv("data/ReFED_US_Food_Waste_Solutions_Summary.csv", skip=3)
@@ -34,7 +34,7 @@ sol_summary_state = read_csv("data/ReFED_US_State_Food_Waste_Solutions_Summary.c
 
 The below creates data profiles of all the available data.
 
-```{r profile, echo=FALSE, results='hide'}
+```{r profile, results='hide'}
 # Configure specific for data profile doc
 produce_EDA = function(x) DataExplorer::create_report(
                             get(x), 
