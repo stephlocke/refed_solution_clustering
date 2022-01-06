@@ -100,6 +100,7 @@ sol_hl
 recipe(~., data=sol_hl) %>%
   step_normalize(all_numeric_predictors()) %>%
   update_role(solution_name, new_role = "id variable") %>%
+  step_rm(annual_us_dollars_gross_financial_benefit.x) %>%
   prep() ->
   processor
 
