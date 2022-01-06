@@ -6,4 +6,4 @@ This analysis will use the food waste reduction solutions dataset to help explor
 
 ## R
 
-The first version of this solution is writtne in Rmarkdown in the [R/](R) directory. The clustering file gets data from the `data/` directory, uses DataExplorer to produce initial EDA files (saved in `eda/`) and then perform k-means clustering.
+The first version of this solution is written in Rmarkdown in the [R/](R) directory. The clustering file gets data from the `data/` directory, uses DataExplorer to produce initial EDA files (saved in `eda/`) and then perform k-means clustering.
