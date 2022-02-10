@@ -201,6 +201,8 @@ Let's see just cluster 3 sorted by priorities.
 ```{r cluster_3}
 assignments %>%
   filter(k==5, .cluster==3) %>%
+  select(solution_name, .cluster) %>%
+  inner_join(sol_hl) %>%
   arrange(desc(annual_meal_equivalents_diverted), desc(profit),
     desc(annual_us_dollars_gross_financial_benefit.y), desc(jobs_created),
     desc(annual_mtco2e_reduction_potential), desc( annual_gallons_water_savings_potential)) 
