@@ -173,17 +173,19 @@ k_fit
 ## Explore k=5 results
 It looks like 4-6 clusters is a good fit so let's look at the the groupings for k=5.
 
+Here are the average values for all solutions within a given cluster.
 ```{r k_5_summary}
 assignments %>%
     filter(k==5) %>%
     select(solution_name, .cluster) %>%
     inner_join(sol_hl) %>%
     group_by(.cluster) %>%
-    summarise_if(is.numeric,.funs=c("mean","min", "max")) %>%
+    summarise_all(mean) %>%
     pivot_longer(cols=-.cluster) %>%
     pivot_wider(names_from=.cluster)
 ```
 
+What are the centroids according to the model?
 ```{r cluster_points}
 clusters %>%
     filter(k==5) %>%
@@ -197,6 +199,7 @@ clusters %>%
 cluster_centroids
 ```
 
+What clusters are each solution in?
 ```{r k_5_assignments}
 assignments %>%
     filter(k==5) %>%
@@ -205,10 +208,22 @@ assignments %>%
     arrange(.cluster, desc(annual_us_dollars_gross_financial_benefit))
 ```
 
-Let's see just cluster 4 sorted by priorities.
+Which cluster meets our criteria? ie which one(s) have higher than average impact in the three measures
+```{r best_cluster}
+clusters %>%
+    filter(k==5) %>%
+    filter(profit>1,
+    annual_us_dollars_gross_financial_benefit>1,
+    annual_meal_equivalents_diverted>1) ->
+    best_cluster
+
+best_cluster
+```
+
+Let's see what's in the best cluster.
 ```{r cluster_3}
 assignments %>%
-  filter(k==5, .cluster==4) %>%
+  filter(k==5, .cluster %in% best_cluster$cluster) %>%
   select(solution_name, .cluster) %>%
   inner_join(sol_hl) %>%
   arrange(desc(annual_meal_equivalents_diverted), desc(profit),
