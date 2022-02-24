@@ -79,7 +79,7 @@ sol_summary %>%
     sol_summary_hl
 
 sol_finance_stakeholder  %>%
-    filter(!stakeholder %in% c("consumer","government")) %>%
+    filter(!stakeholder %in% c("Consumers","Government")) %>%
     group_by(solution_group,solution_priority_action_area,solution_name) %>%
     summarise_if(is.numeric,sum) %>%
     ungroup()  ->
@@ -89,14 +89,15 @@ sol_finance_stakeholder  %>%
 Use the stakeholder filtered calcs where column names overlap. Add a profit column based on net financial benefit and the gross financial benefit. Then select only metrics that matter to scenario.
 ```{r combine_dataset}
 sol_summary_hl %>%
-    inner_join(sol_finance_hl, by=c("solution_group","solution_priority_action_area","solution_name")) %>%
+    inner_join(sol_finance_hl, by=c("solution_group","solution_priority_action_area","solution_name"),
+    suffix=c(".x","")) %>%
     select(-(solution_group:solution_priority_action_area)) %>%
     select(-ends_with(".x")) %>% 
-    mutate(profit = annual_us_dollars_net_financial_benefit.y / annual_us_dollars_gross_financial_benefit.y) %>%
-    select(solution_name, annual_meal_equivalents_diverted, 
+    mutate(profit = annual_us_dollars_net_financial_benefit / max(annual_us_dollars_gross_financial_benefit,1)) %>%
+    select(solution_name, annual_meal_equivalents_diverted,
             profit, annual_gallons_water_savings_potential,
             jobs_created, annual_mtco2e_reduction_potential,
-            annual_us_dollars_gross_financial_benefit.y) ->
+            annual_us_dollars_gross_financial_benefit) ->
     sol_hl
 
 sol_hl
@@ -194,16 +195,49 @@ assignments %>%
     filter(k==5) %>%
     select(solution_name, .cluster) %>%
     inner_join(sol_hl) %>%
-    arrange(.cluster, desc(annual_us_dollars_gross_financial_benefit.y))
+    arrange(.cluster, desc(annual_us_dollars_gross_financial_benefit))
 ```
 
-Let's see just cluster 3 sorted by priorities.
+Let's see just cluster 4 sorted by priorities.
 ```{r cluster_3}
 assignments %>%
-  filter(k==5, .cluster==3) %>%
+  filter(k==5, .cluster==4) %>%
   select(solution_name, .cluster) %>%
   inner_join(sol_hl) %>%
   arrange(desc(annual_meal_equivalents_diverted), desc(profit),
-    desc(annual_us_dollars_gross_financial_benefit.y), desc(jobs_created),
+    desc(annual_us_dollars_gross_financial_benefit), desc(jobs_created),
     desc(annual_mtco2e_reduction_potential), desc( annual_gallons_water_savings_potential)) 
 ```
+
+## Make outputs
+Create CSVs for prettification in Power BI!
+
+### Cluster centroids
+These are the centers of clusters to help understand the different groups.
+
+The normalized version presents the clusters as distances from the average value for the column.
+
+- -1 is one standard deviation less than the mean
+- 0 is the mean
+- 1 is one standard deviation more than the mean
+```{r make_centroid_outputs}
+clusters %>%
+    filter(k==5) %>%
+    select(-kclust, -glanced, -augmented, -k, -withinss, -size) %>%
+    pivot_longer(cols=-cluster) %>% 
+    write_csv(file = "outputs/clusters_normalized.csv")
+```
+
+- [clusters_normalized.csv](outputs/clusters_normalized.csv)
+
+### Cluster assignments
+A simple CSV with the solution name and the cluster it belongs to
+
+```{r make_cluster_assignments_outputs}
+assignments %>%
+    filter(k==5) %>%
+    select(solution_name, .cluster) %>%
+    write_csv(file = "outputs/cluster_assignments.csv")
+```
+
+- [cluster_assignments.csv](outputs/cluster_assignments.csv)
