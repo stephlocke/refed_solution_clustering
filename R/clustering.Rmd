@@ -12,6 +12,7 @@ output:
 library(tidyverse)
 library(tidymodels)
 library(DataExplorer)
+library(svglite)
 options(scipen=999)
 ```
 
@@ -123,7 +124,7 @@ It runs many clustering models and extract key results.
 
 ```{r kmeans_cluster}
 set.seed(42)
-tibble(k = 1:9) %>%
+tibble(k = 2:12) %>%
   mutate(
     kclust = map(k, ~kmeans(sol[,-1], .x)),
     tidied = map(kclust, tidy),
@@ -163,7 +164,10 @@ We can then explore the fit of the differing number of clusters to see where we 
 ```{r k_fit}
 ggplot(clusterings, aes(k, tot.withinss)) +
   geom_line() +
-  geom_point()
+  geom_point() ->
+  k_fit
+
+k_fit
 ```
 
 ## Explore k=5 results
@@ -187,7 +191,10 @@ clusters %>%
     pivot_longer(cols=-cluster) %>%
     ggplot( aes(x=name, y=value, colour=cluster, group=cluster)) +
      geom_line() +
-     coord_flip() 
+     coord_flip() ->
+     cluster_centroids
+
+cluster_centroids
 ```
 
 ```{r k_5_assignments}
@@ -241,3 +248,14 @@ assignments %>%
 ```
 
 - [cluster_assignments.csv](outputs/cluster_assignments.csv)
+
+### Charts
+Save the chart showing the measure of fit for cluster models (as this show's 2-9 and 9-12 it can be reused)
+```{r k212_eval}
+ggsave("outputs/k212_evaluation.svg", k_fit)
+```
+
+Save the chart showing the cluster centers for features for k=5
+```{r k5_centroids}
+ggsave("outputs/cluster_centroids.svg", cluster_centroids)
+```
