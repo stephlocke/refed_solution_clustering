@@ -172,7 +172,9 @@ ggplot(clusterings, aes(k, tot.withinss)) +
   geom_line() +
   geom_point() +
   theme_minimal() +
-  scale_x_continuous(n.breaks=12) ->
+  scale_x_continuous(n.breaks=12) +
+  labs(title="Evaluation metric per model", 
+    y="Total within cluster sum of squares", x="k")->
   k_fit
 
 k_fit
@@ -198,7 +200,7 @@ best_k
 Here are the average values for all solutions within a given cluster.
 ```{r k_5_summary}
 assignments %>%
-    filter(k==6) %>%
+    filter(k==best_k$k) %>%
     select(solution_name, .cluster) %>%
     inner_join(sol_hl) %>%
     group_by(.cluster) %>%
@@ -221,7 +223,10 @@ clusters %>%
     ggplot( aes(x=name, y=value, colour=cluster, group=cluster)) +
      geom_line() +
      coord_flip() +
-     labs(y="Centroid sd away from mean for col", x="Column") +
+     facet_wrap(~cluster) +
+     labs(title = "Centroid values for each feature",
+     subtitle = "Z-score = number of standard deviations from the mean",
+     y="Z-score", x="Feature") +
      theme_minimal() +
      scale_y_continuous(n.breaks=6) ->
      cluster_centroids
@@ -255,7 +260,7 @@ Let's see what's in the best cluster.
 ```{r cluster_3}
 assignments %>%
   filter(k==best_k$k, .cluster %in% best_cluster$cluster) %>%
-  select(solution_name, .cluster) %>%
+  select(solution_name) %>%
   inner_join(sol_hl) %>%
   arrange(desc(annual_meal_equivalents_diverted), desc(profit_margin),
     desc(annual_us_dollars_gross_financial_benefit), desc(jobs_created),
