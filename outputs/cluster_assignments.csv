@@ -1,41 +1,41 @@
 solution_name,.cluster
 Decreased Transit Time,5
-First Expired First Out,1
+First Expired First Out,5
 Intelligent Routing,5
-Reduced Warehouse Handling,3
-Temperature Monitoring (pallet Transport),1
-Active & Intelligent Packaging,1
-Manufacturing Byproduct Utilization (upcycling),5
-Manufacturing Line Optimization,1
-Buyer Specification Expansion,1
-Gleaning,3
-Imperfect & Surplus Produce Channels,5
-Partial Order Acceptance,3
-Assisted Distressed Sales,1
-Decreased Minimum Order Quantity,3
-Dynamic Pricing,1
-Enhanced Demand Planning,5
-Increased Delivery Frequency,3
-Markdown Alert Applications,5
-Minimized On Hand Inventory,3
-Temperature Monitoring (foodservice),3
-Waste Tracking (foodservice),5
-Buffet Signage,3
-Consumer Education Campaigns,4
-K-12 Education Campaigns,3
-K-12 Lunch Improvements,3
-Meal Kits,4
-Package Design,1
-Portion Sizes,4
-Small Plates,3
-Standardized Date Labels,1
-Trayless,3
-Centralized Anaerobic Digestion,3
-Centralized Composting,2
-Community Composting,3
-Livestock Feed,3
-Donation Coordination & Matching,3
-Donation Education,1
-Donation Storage Handling & Capacity,3
-Donation Transportation,1
-Donation Value-added Processing,3
+Reduced Warehouse Handling,1
+Temperature Monitoring (pallet Transport),5
+Active & Intelligent Packaging,3
+Manufacturing Byproduct Utilization (upcycling),6
+Manufacturing Line Optimization,3
+Buyer Specification Expansion,5
+Gleaning,1
+Imperfect & Surplus Produce Channels,6
+Partial Order Acceptance,1
+Assisted Distressed Sales,3
+Decreased Minimum Order Quantity,1
+Dynamic Pricing,5
+Enhanced Demand Planning,6
+Increased Delivery Frequency,1
+Markdown Alert Applications,6
+Minimized On Hand Inventory,1
+Temperature Monitoring (foodservice),1
+Waste Tracking (foodservice),6
+Buffet Signage,1
+Consumer Education Campaigns,2
+K-12 Education Campaigns,1
+K-12 Lunch Improvements,1
+Meal Kits,2
+Package Design,3
+Portion Sizes,2
+Small Plates,1
+Standardized Date Labels,3
+Trayless,1
+Centralized Anaerobic Digestion,1
+Centralized Composting,4
+Community Composting,1
+Livestock Feed,1
+Donation Coordination & Matching,1
+Donation Education,3
+Donation Storage Handling & Capacity,1
+Donation Transportation,3
+Donation Value-added Processing,1
