@@ -178,6 +178,21 @@ ggplot(clusterings, aes(k, tot.withinss)) +
 k_fit
 ```
 
+What value for k should we pick? Let's look at the relative difference in tot.withinss reduction between k values.
+
+```{r totreduction}
+improvement_threshold = .9
+clusterings %>%
+  select(k, tot.withinss) %>%
+  mutate(rel_tot_withinss = tot.withinss / lag(tot.withinss)) %>%
+  mutate(improvement_change = rel_tot_withinss <improvement_threshold
+               & lead(rel_tot_withinss) >improvement_threshold) %>%
+  filter(improvement_change) %>%
+  filter(k==min(k)) ->
+  best_k
+
+best_k
+```
 ## Explore k=6 results
 It looks like 4-6 clusters is a good fit so let's look at the the groupings for k=5.
 
@@ -201,7 +216,7 @@ The normalized version presents the clusters as distances from the average value
 - 1 is one standard deviation more than the mean
 ```{r cluster_points}
 clusters %>%
-    filter(k==6) %>%
+    filter(k==best_k$k) %>%
     select(-kclust, -glanced, -augmented, -k, -withinss, -size) %>%
     pivot_longer(cols=-cluster) %>%
     ggplot( aes(x=name, y=value, colour=cluster, group=cluster)) +
@@ -218,7 +233,7 @@ cluster_centroids
 What clusters are each solution in?
 ```{r k_5_assignments}
 assignments %>%
-    filter(k==6) %>%
+    filter(k==best_k$k) %>%
     select(solution_name, .cluster) %>%
     inner_join(sol_hl) %>%
     arrange(.cluster, desc(annual_us_dollars_gross_financial_benefit))
@@ -227,7 +242,7 @@ assignments %>%
 Which cluster meets our criteria? ie which one(s) have higher than average impact in the three measures
 ```{r best_cluster}
 clusters %>%
-    filter(k==6) %>%
+    filter(k==best_k$k) %>%
     filter(profit_margin>1,
     annual_us_dollars_gross_financial_benefit>1,
     annual_meal_equivalents_diverted>1) %>%
@@ -240,7 +255,7 @@ best_cluster
 Let's see what's in the best cluster.
 ```{r cluster_3}
 assignments %>%
-  filter(k==6, .cluster %in% best_cluster$cluster) %>%
+  filter(k==best_k$k, .cluster %in% best_cluster$cluster) %>%
   select(solution_name, .cluster) %>%
   inner_join(sol_hl) %>%
   arrange(desc(annual_meal_equivalents_diverted), desc(profit_margin),
@@ -261,7 +276,7 @@ The normalized version presents the clusters as distances from the average value
 - 1 is one standard deviation more than the mean
 ```{r make_centroid_outputs}
 clusters %>%
-    filter(k==5) %>%
+    filter(k==best_k$k) %>%
     select(-kclust, -glanced, -augmented, -k, -withinss, -size) %>%
     pivot_longer(cols=-cluster) %>% 
     write_csv(file = "outputs/clusters_normalized.csv")
@@ -274,7 +289,7 @@ A simple CSV with the solution name and the cluster it belongs to
 
 ```{r make_cluster_assignments_outputs}
 assignments %>%
-    filter(k==5) %>%
+    filter(k==best_k$k) %>%
     select(solution_name, .cluster) %>%
     write_csv(file = "outputs/cluster_assignments.csv")
 ```
