@@ -87,6 +87,12 @@ sol_finance_stakeholder  %>%
     sol_finance_hl
 ```
 
+How many viable solutions have been identified as having capturable revenue?
+```{r check_row_count}
+nrow(sol_finance_hl)
+```
+
+
 Use the stakeholder filtered calcs where column names overlap. Add a profit column based on net financial benefit and the gross financial benefit. Then select only metrics that matter to scenario.
 ```{r combine_dataset}
 sol_summary_hl %>%
@@ -94,9 +100,9 @@ sol_summary_hl %>%
     suffix=c(".x","")) %>%
     select(-(solution_group:solution_priority_action_area)) %>%
     select(-ends_with(".x")) %>% 
-    mutate(profit = annual_us_dollars_net_financial_benefit / max(annual_us_dollars_gross_financial_benefit,1)) %>%
+    mutate(profit_margin = annual_us_dollars_net_financial_benefit / max(annual_us_dollars_gross_financial_benefit,1)) %>%
     select(solution_name, annual_meal_equivalents_diverted,
-            profit, annual_gallons_water_savings_potential,
+            profit_margin, annual_gallons_water_savings_potential,
             jobs_created, annual_mtco2e_reduction_potential,
             annual_us_dollars_gross_financial_benefit) ->
     sol_hl
@@ -152,7 +158,7 @@ cluster_results %>%
 ## Visualise results
 We can look at the results of the clustering models split by key factors, bearing in mind the clustering is based on all numeric variables not just the ones shown.
 ```{r cluster_groups}
-p1 = ggplot(assignments, aes(x = profit, y = annual_meal_equivalents_diverted)) +
+p1 = ggplot(assignments, aes(x = profit_margin, y = annual_meal_equivalents_diverted)) +
   geom_point(aes(color = .cluster), alpha = 0.8) + 
   facet_wrap(~ k) +
   geom_point(data = clusters, size = 10, shape = "x")
@@ -164,36 +170,46 @@ We can then explore the fit of the differing number of clusters to see where we 
 ```{r k_fit}
 ggplot(clusterings, aes(k, tot.withinss)) +
   geom_line() +
-  geom_point() ->
+  geom_point() +
+  theme_minimal() +
+  scale_x_continuous(n.breaks=12) ->
   k_fit
 
 k_fit
 ```
 
-## Explore k=5 results
+## Explore k=6 results
 It looks like 4-6 clusters is a good fit so let's look at the the groupings for k=5.
 
 Here are the average values for all solutions within a given cluster.
 ```{r k_5_summary}
 assignments %>%
-    filter(k==5) %>%
+    filter(k==6) %>%
     select(solution_name, .cluster) %>%
     inner_join(sol_hl) %>%
     group_by(.cluster) %>%
-    summarise_all(mean) %>%
+    summarise_if(is.numeric,mean) %>%
     pivot_longer(cols=-.cluster) %>%
     pivot_wider(names_from=.cluster)
 ```
 
 What are the centroids according to the model?
+The normalized version presents the clusters as distances from the average value for the column.
+
+- -1 is one standard deviation less than the mean
+- 0 is the mean
+- 1 is one standard deviation more than the mean
 ```{r cluster_points}
 clusters %>%
-    filter(k==5) %>%
+    filter(k==6) %>%
     select(-kclust, -glanced, -augmented, -k, -withinss, -size) %>%
     pivot_longer(cols=-cluster) %>%
     ggplot( aes(x=name, y=value, colour=cluster, group=cluster)) +
      geom_line() +
-     coord_flip() ->
+     coord_flip() +
+     labs(y="Centroid sd away from mean for col", x="Column") +
+     theme_minimal() +
+     scale_y_continuous(n.breaks=6) ->
      cluster_centroids
 
 cluster_centroids
@@ -202,7 +218,7 @@ cluster_centroids
 What clusters are each solution in?
 ```{r k_5_assignments}
 assignments %>%
-    filter(k==5) %>%
+    filter(k==6) %>%
     select(solution_name, .cluster) %>%
     inner_join(sol_hl) %>%
     arrange(.cluster, desc(annual_us_dollars_gross_financial_benefit))
@@ -211,10 +227,11 @@ assignments %>%
 Which cluster meets our criteria? ie which one(s) have higher than average impact in the three measures
 ```{r best_cluster}
 clusters %>%
-    filter(k==5) %>%
-    filter(profit>1,
+    filter(k==6) %>%
+    filter(profit_margin>1,
     annual_us_dollars_gross_financial_benefit>1,
-    annual_meal_equivalents_diverted>1) ->
+    annual_meal_equivalents_diverted>1) %>%
+    select(cluster,annual_meal_equivalents_diverted:annual_us_dollars_gross_financial_benefit) ->
     best_cluster
 
 best_cluster
@@ -223,10 +240,10 @@ best_cluster
 Let's see what's in the best cluster.
 ```{r cluster_3}
 assignments %>%
-  filter(k==5, .cluster %in% best_cluster$cluster) %>%
+  filter(k==6, .cluster %in% best_cluster$cluster) %>%
   select(solution_name, .cluster) %>%
   inner_join(sol_hl) %>%
-  arrange(desc(annual_meal_equivalents_diverted), desc(profit),
+  arrange(desc(annual_meal_equivalents_diverted), desc(profit_margin),
     desc(annual_us_dollars_gross_financial_benefit), desc(jobs_created),
     desc(annual_mtco2e_reduction_potential), desc( annual_gallons_water_savings_potential)) 
 ```
