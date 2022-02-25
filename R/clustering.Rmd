@@ -193,8 +193,7 @@ clusterings %>%
 
 best_k
 ```
-## Explore k=6 results
-It looks like 4-6 clusters is a good fit so let's look at the the groupings for k=5.
+## Explore results for best value of k
 
 Here are the average values for all solutions within a given cluster.
 ```{r k_5_summary}
@@ -302,7 +301,11 @@ Save the chart showing the measure of fit for cluster models (as this show's 2-9
 ggsave("outputs/k212_evaluation.svg", k_fit)
 ```
 
+- [k212_evaluation.svg](outputs/k212_evaluation.svg)
+
 Save the chart showing the cluster centers for features for k=5
 ```{r k5_centroids}
 ggsave("outputs/cluster_centroids.svg", cluster_centroids)
 ```
+
+- [cluster_centroids.svg](outputs/cluster_centroids.svg)
